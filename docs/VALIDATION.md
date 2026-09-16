@@ -33,6 +33,11 @@ after Dev Containers adjusts that user's UID to match the Linux host.
 
 ## CI coverage and limits
 
+All four jobs in [validation run 35147134155](https://github.com/yingbull/template-python-classroom/actions/runs/35147134155)
+passed for implementation commit `0bf6300`: Python tests, lint, and formatting on
+Linux, macOS, and Windows, plus Docker container startup, smoke checks, and saved
+untracked-file persistence through container removal/recreation on Linux.
+
 The [Template checks workflow](https://github.com/yingbull/template-python-classroom/actions/workflows/checks.yml)
 tests Python helpers on Linux, macOS, and Windows; it exercises the actual Docker
 devcontainer/persistence lifecycle on Linux. These are different levels of
