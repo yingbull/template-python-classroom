@@ -31,7 +31,7 @@
   },
   "shutdownAction": "stopCompose",
   "overrideCommand": false,
-  "postCreateCommand": "/opt/venv/bin/python .devcontainer/setup.py config",
+  "postCreateCommand": "sudo chown -R $(id -u):$(id -g) /opt/venv && /opt/venv/bin/python .devcontainer/setup.py config",
   "postStartCommand": "/opt/venv/bin/python .devcontainer/workspace.py check",
   "postAttachCommand": "/opt/venv/bin/python .devcontainer/workspace.py check",
   "customizations": {

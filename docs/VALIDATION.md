@@ -19,11 +19,17 @@ identity/mount check. It has no automatic local backup feature.
   ID; the same file remained available both on the host and inside the new
   container. The temporary proof file was then removed.
 - The existing course containers continued running throughout validation.
+- The existing `classgh-setup.prepare_seed` function imported the public template
+  with `--seed-dir .`. Its resulting Git tree matched the published source
+  exactly, with one fresh commit, root-level Dev Containers configuration, and
+  no generated host-specific files.
 
 The lifecycle check exposed two Podman compatibility details: generated project
 names use only letters and digits, and the generated configuration must be the
 **first** Compose file. Some providers select the name from the first file before
 merging subsequent files. The template and documented commands use this order.
+Container creation also aligns `/opt/venv` ownership with the development user
+after Dev Containers adjusts that user's UID to match the Linux host.
 
 ## CI coverage and limits
 
