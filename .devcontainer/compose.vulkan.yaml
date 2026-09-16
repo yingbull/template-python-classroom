@@ -1,0 +1,8 @@
+# Optional Linux AMD/Intel GPU support; requires an accessible /dev/dri.
+services:
+  ollama:
+    environment:
+      OLLAMA_VULKAN: "1"
+      OLLAMA_IGPU_ENABLE: "1" # Required for integrated Intel/AMD GPUs in this Ollama version.
+    devices:
+      - /dev/dri:/dev/dri

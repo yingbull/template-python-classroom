@@ -1,0 +1,57 @@
+{
+  "name": "Python Classroom",
+  "dockerComposeFile": [
+    "compose.runtime.yaml",
+    "compose.yaml"
+  ],
+  "initializeCommand": [
+    "docker",
+    "run",
+    "--rm",
+    "--user",
+    "0",
+    "--volume",
+    "${localWorkspaceFolder}/.devcontainer:/config:z",
+    "mcr.microsoft.com/devcontainers/python:1-3.13-bookworm",
+    "python",
+    "/config/configure_runtime.py",
+    "${localWorkspaceFolder}"
+  ],
+  "service": "python",
+  "runServices": [
+    "python",
+    "ollama"
+  ],
+  "workspaceFolder": "/workspace",
+  "remoteUser": "vscode",
+  "userEnvProbe": "none",
+  "remoteEnv": {
+    "VIRTUAL_ENV": "/opt/venv",
+    "PATH": "/opt/venv/bin:${containerEnv:PATH}"
+  },
+  "shutdownAction": "stopCompose",
+  "overrideCommand": false,
+  "postCreateCommand": "/opt/venv/bin/python .devcontainer/setup.py config",
+  "postStartCommand": "/opt/venv/bin/python .devcontainer/workspace.py check",
+  "postAttachCommand": "/opt/venv/bin/python .devcontainer/workspace.py check",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.debugpy",
+        "charliermarsh.ruff",
+        "Continue.continue"
+      ],
+      "settings": {
+        "remote.extensionKind": {
+          "Continue.continue": [
+            "workspace"
+          ]
+        },
+        "python.defaultInterpreterPath": "/opt/venv/bin/python",
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  }
+}

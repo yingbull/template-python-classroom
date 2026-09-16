@@ -1,0 +1,6 @@
+# Optional supplement for rootless Podman + crun when GPU access uses host groups.
+# Do not use with Docker, which does not support keep-groups.
+services:
+  ollama:
+    group_add:
+      - keep-groups

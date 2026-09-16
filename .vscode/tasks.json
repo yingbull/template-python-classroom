@@ -1,0 +1,94 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Python: Run current file",
+      "type": "process",
+      "command": "python",
+      "args": [
+        "${file}"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Python: pytest",
+      "type": "process",
+      "command": "python",
+      "args": [
+        "-m",
+        "pytest"
+      ],
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Python: Ruff check",
+      "type": "process",
+      "command": "ruff",
+      "args": [
+        "check",
+        "."
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Python: Format",
+      "type": "process",
+      "command": "ruff",
+      "args": [
+        "format",
+        "."
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Continue: Apply course config",
+      "type": "process",
+      "command": "python",
+      "args": [
+        ".devcontainer/setup.py",
+        "config"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Ollama: Download missing models",
+      "type": "process",
+      "command": "python",
+      "args": [
+        ".devcontainer/setup.py",
+        "pull"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Ollama: Check models",
+      "type": "process",
+      "command": "python",
+      "args": [
+        ".devcontainer/setup.py",
+        "check"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Ollama: Warm up Gemma tutor",
+      "type": "process",
+      "command": "python",
+      "args": [
+        ".devcontainer/warm_tutor.py"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Classroom: Check workspace and Git status",
+      "type": "process",
+      "command": "python",
+      "args": [
+        ".devcontainer/workspace.py",
+        "check"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}

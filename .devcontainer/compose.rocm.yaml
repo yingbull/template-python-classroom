@@ -1,0 +1,7 @@
+# Optional AMD ROCm on supported Linux x86-64 hosts.
+services:
+  ollama:
+    image: docker.io/ollama/ollama:0.33.3-rocm
+    devices:
+      - /dev/kfd:/dev/kfd
+      - /dev/dri:/dev/dri

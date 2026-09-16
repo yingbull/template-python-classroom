@@ -1,0 +1,47 @@
+# initializeCommand generates the checkout-specific name in compose.runtime.yaml.
+services:
+  python:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    command: ["/opt/venv/bin/python", "/workspace/.devcontainer/tutor_gateway.py"]
+    working_dir: /workspace
+    user: vscode
+    init: true
+    volumes:
+      - type: bind
+        source: ..
+        target: /workspace
+        bind:
+          create_host_path: false
+          selinux: z
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+      PYTHONUNBUFFERED: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+    depends_on:
+      ollama:
+        condition: service_healthy
+
+  ollama:
+    image: docker.io/ollama/ollama:0.33.3
+    environment:
+      OLLAMA_HOST: 0.0.0.0:11434
+      OLLAMA_CONTEXT_LENGTH: "16384"
+      OLLAMA_NUM_PARALLEL: "1"
+      OLLAMA_MAX_LOADED_MODELS: "1"
+      OLLAMA_KEEP_ALIVE: 5m
+      OLLAMA_NO_CLOUD: "1"
+    volumes:
+      - ollama-models:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 10s
+
+volumes:
+  ollama-models:
+    # Only disposable model downloads are shared across assignment checkouts.
+    name: classroom-python_ollama-models

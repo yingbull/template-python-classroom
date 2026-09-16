@@ -1,0 +1,118 @@
+name: Classroom Local Python
+version: 1.0.0
+schema: v1
+models:
+- name: Tutor - Gemma 4 E4B (default)
+  provider: ollama
+  model: gemma4:e4b-it-qat
+  apiBase: http://127.0.0.1:11435/tutor/
+  roles:
+  - chat
+  - edit
+  capabilities:
+  - tool_use
+  - image_input
+  defaultCompletionOptions:
+    contextLength: 16384
+    maxTokens: 2048
+    temperature: 1
+    topK: 64
+    topP: 0.95
+    reasoning: false
+    keepAlive: 900
+  requestOptions:
+    timeout: 300
+- name: Direct - Gemma 4 E4B
+  provider: ollama
+  model: gemma4:e4b-it-qat
+  apiBase: http://127.0.0.1:11435/direct/
+  roles:
+  - chat
+  - edit
+  capabilities:
+  - tool_use
+  - image_input
+  defaultCompletionOptions:
+    contextLength: 16384
+    maxTokens: 2048
+    temperature: 1
+    topK: 64
+    topP: 0.95
+    reasoning: false
+    keepAlive: 900
+  requestOptions:
+    timeout: 300
+- name: Direct - Qwen 3.5 4B
+  provider: ollama
+  model: qwen3.5:4b
+  apiBase: http://127.0.0.1:11435/direct/
+  roles:
+  - chat
+  - edit
+  capabilities:
+  - tool_use
+  - image_input
+  defaultCompletionOptions:
+    contextLength: 16384
+    maxTokens: 2048
+    temperature: 0.2
+    presencePenalty: 0
+    reasoning: false
+    keepAlive: 300
+  requestOptions:
+    timeout: 300
+- name: Direct - Qwen 3 VL 8B
+  provider: ollama
+  model: qwen3-vl:8b-instruct
+  apiBase: http://127.0.0.1:11435/direct/
+  roles:
+  - chat
+  - edit
+  capabilities:
+  - tool_use
+  - image_input
+  defaultCompletionOptions:
+    contextLength: 16384
+    maxTokens: 2048
+    temperature: 0.2
+    presencePenalty: 0
+    reasoning: false
+    keepAlive: 300
+  requestOptions:
+    timeout: 300
+- name: Apply proposed diff - Qwen 3.5 4B
+  provider: ollama
+  model: qwen3.5:4b
+  apiBase: http://ollama:11434/
+  roles:
+  - apply
+  capabilities:
+  - tool_use
+  - image_input
+  defaultCompletionOptions:
+    contextLength: 16384
+    maxTokens: 2048
+    temperature: 0.2
+    reasoning: false
+    keepAlive: 300
+  requestOptions:
+    timeout: 300
+- name: Qwen 2.5 Coder 1.5B (autocomplete)
+  provider: ollama
+  model: qwen2.5-coder:1.5b
+  apiBase: http://ollama:11434
+  roles:
+  - autocomplete
+  defaultCompletionOptions:
+    contextLength: 2048
+    maxTokens: 128
+    temperature: 0.2
+    keepAlive: 300
+  autocompleteOptions:
+    debounceDelay: 750
+    modelTimeout: 60000
+    maxPromptTokens: 1024
+    onlyMyCode: true
+rules:
+- Follow the assistance mode supplied by the local course adapter. Explain meaningful changes and
+  distinguish proposed edits from successful tool results.

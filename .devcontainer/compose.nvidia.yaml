@@ -1,0 +1,10 @@
+# Optional: append this file to dockerComposeFile in devcontainer.json.
+services:
+  ollama:
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]

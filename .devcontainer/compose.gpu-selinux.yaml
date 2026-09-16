@@ -1,0 +1,6 @@
+# Optional, only where the host's SELinux device policy blocks GPU access.
+# Restrict the label exception to Ollama; the development container keeps labels.
+services:
+  ollama:
+    security_opt:
+      - label=disable
