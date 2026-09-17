@@ -13,6 +13,13 @@ files, survive container replacement.** Work inside the VS Code workspace,
 
 ## Student setup
 
+**Docker is the default.** Podman works with the unchanged repository when a
+working Docker-compatible CLI and Compose are configured to use its engine.
+Follow [Podman with no repository changes](.devcontainer/CONTAINER_ENGINE.md#podman-with-no-repository-changes)
+for platform setup and the two checks to run before `code .`. Installing Podman
+alone does not provide that compatibility setup. The guide also documents
+explicitly selecting the `podman` executable as an alternative.
+
 1. Install **Git**, **VS Code**, and a container engine:
    - Linux: Docker Engine + Compose v2, or Podman with Docker CLI compatibility.
    - macOS: Docker Desktop or Podman Desktop with its machine running.
