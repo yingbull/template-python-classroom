@@ -28,7 +28,14 @@ explicitly selecting the `podman` executable as an alternative.
 2. Install VS Code's **Dev Containers** extension
    (`ms-vscode-remote.remote-containers`). On Windows, also install **WSL**
    (`ms-vscode-remote.remote-wsl`) and open the checkout through WSL.
-3. **In a host terminal**, clone the repository your instructor gives you:
+3. Your instructor will provide a link to your assignment repository. Accept
+   any GitHub invitation first, then open that link while signed in to the
+   GitHub account you used to accept the invitation. On the repository page,
+   select **Code → HTTPS** and copy the clone URL. If you have not received a
+   repository link or cannot access it, ask your instructor for your link or
+   help with access.
+
+   **In a host terminal**, clone your assignment using that URL:
 
    ```sh
    git clone https://github.com/YOUR-CLASS/YOUR-ASSIGNMENT.git
@@ -36,6 +43,19 @@ explicitly selecting the `podman` executable as an alternative.
    code .
    ```
 
+   **`YOUR-CLASS` and `YOUR-ASSIGNMENT` are placeholders, not text to type
+   literally.** Replace the entire example URL with the HTTPS URL you copied.
+   In the `cd` command, replace `YOUR-ASSIGNMENT` with the repository name—the
+   last part of the URL, without `.git`. For example, if your instructor gave
+   you `https://github.com/PROG1784F26/assignment1-jsmith`, you would run:
+
+   ```sh
+   git clone https://github.com/PROG1784F26/assignment1-jsmith.git
+   cd assignment1-jsmith
+   code .
+   ```
+
+   `assignment1-jsmith` is also an example; use your own assigned repository.
    Any folder name works. Linux/macOS: use a folder such as `~/courses/`.
    Windows: clone into your WSL Linux home, such as `~/courses/`, for better
    filesystem performance. On macOS, allow the engine to share that folder.
