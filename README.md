@@ -142,7 +142,7 @@ configuration must be at the student repository's root. Accepting the script's
 usual assignment-subdirectory default nests the environment where VS Code will
 not discover it automatically.
 
-The script creates private `EMAILPREFIX-assignment1` repositories with a fresh
+The script creates private `assignment1-EMAILPREFIX` repositories with a fresh
 initial commit. Its student-team/invitation handling is unchanged. The public
 visibility of this template does not make student repositories public.
 Repeat with `--assignment assignment2` and the same provisioning state directory.
