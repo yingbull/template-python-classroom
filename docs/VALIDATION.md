@@ -4,6 +4,28 @@ The template is derived from the existing course runtime, with checkout-specific
 Compose identities, an explicit host bind mount, Auto Save, and a workspace
 identity/mount check. It has no automatic local backup feature.
 
+## Published classroom image — September 17, 2026
+
+- [Publication run 35256769500](https://github.com/yingbull/template-python-classroom/actions/runs/35256769500)
+  built and tested release `ghcr.io/yingbull/classroom-python:1.0.0` on native
+  AMD64 and ARM64 runners. Both passed 34 helper tests, the sample assignment
+  test, package-version checks, non-root permissions, and `pip check`.
+- Anonymous registry requests verified that the published index contains
+  `linux/amd64` and `linux/arm64`. Both template image references pin the index
+  digest documented in [IMAGE.md](IMAGE.md).
+- [Template checks run 35257234917](https://github.com/yingbull/template-python-classroom/actions/runs/35257234917)
+  passed all four jobs for implementation commit `ace7ae5`: Python/lint checks
+  on Linux, macOS, and Windows, plus Docker startup, smoke checks, assignment
+  dependency customization, and saved-work persistence on Linux.
+- Local Podman also pulled and started the published image, passed the smoke
+  check, and preserved an untracked file across removal/recreation with a new
+  container ID. The unchanged requirements path skipped pip.
+- Separate local image builds confirmed that changing a dependency version
+  works and that removing dependencies produces a fresh virtual environment
+  without the removed packages. `pip check` passed for customized requirements.
+- Temporary test containers and proof files were removed. The original course
+  containers, course repository, and `classgh-setup` repository were unchanged.
+
 ## Local validation — September 16, 2026
 
 - All 34 helper tests passed with Python 3.13 inside the devcontainer and
