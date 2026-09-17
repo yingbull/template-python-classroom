@@ -31,6 +31,15 @@ jobs:
       - run: npm install --global @devcontainers/cli@0.80.0
       - run: devcontainer up --workspace-folder .
       - run: devcontainer exec --workspace-folder . python .devcontainer/smoke.py
+      - name: Verify assignment-specific dependency changes still work
+        run: |
+          context=$(mktemp -d)
+          cp .devcontainer/Dockerfile "$context/Dockerfile"
+          cp requirements-dev.txt "$context/requirements-dev.txt"
+          echo 'packaging==25.0' >> "$context/requirements-dev.txt"
+          docker build --tag classroom-custom:test "$context"
+          docker run --rm --user vscode classroom-custom:test python -c "from importlib.metadata import version; assert version('packaging') == '25.0'"
+          docker run --rm --user vscode classroom-custom:test python -m pip check
       - name: Verify saved untracked work survives container removal
         run: |
           devcontainer exec --workspace-folder . python -c "from pathlib import Path; Path('persistence-proof.txt').write_text('saved but not committed')"

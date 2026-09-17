@@ -35,8 +35,9 @@ files, survive container replacement.** Work inside the VS Code workspace,
    filesystem performance. On macOS, allow the engine to share that folder.
 4. Run **Dev Containers: Reopen in Container** from the command palette.
    Open the repository root containing `.devcontainer`, not its parent folder.
-5. The first build installs Python 3.13, pytest, Ruff, the debugger, and the
-   Python, Pylance, Ruff, and Continue editor extensions.
+5. The first build downloads the prepared classroom image with Python 3.13,
+   pytest, Ruff, PyYAML, and jsonschema. VS Code installs the debugger and the
+   Python, Pylance, Ruff, and Continue editor extensions separately.
 6. In the **container terminal**, try:
 
    ```sh
@@ -47,6 +48,14 @@ files, survive container replacement.** Work inside the VS Code workspace,
 
 Press **F5** to debug the current Python file. VS Code's **Terminal: Run Task**
 menu also contains Run, Test, Format, and workspace-check commands.
+
+The classroom image is published for both Intel/AMD (`linux/amd64`) and ARM
+(`linux/arm64`, including Apple Silicon using Linux containers). Unchanged
+assignments reuse its installed Python packages without running pip. Editing
+`requirements-dev.txt` and rebuilding still installs the assignment's requested
+dependencies in a fresh virtual environment. The first download is still
+required; later assignments can reuse cached image layers on the same engine.
+See [Classroom image](docs/IMAGE.md) for publishing and version updates.
 
 Official setup references: [VS Code Dev Containers](https://code.visualstudio.com/docs/devcontainers/containers),
 [Docker WSL recommendations](https://docs.docker.com/desktop/features/wsl/best-practices/),
