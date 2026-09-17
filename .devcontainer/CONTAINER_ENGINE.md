@@ -215,5 +215,5 @@ the engine **after it has been selected**; it does not select the host CLI.
 
 Reference: [VS Code's Podman configuration](https://code.visualstudio.com/remote/advancedcontainers/docker-options#_podman).
 
-See [Template development](../README.md#template-development) for verification
+See [Template development](../docs/template/README.md#template-development) for verification
 coverage and platform limits.
