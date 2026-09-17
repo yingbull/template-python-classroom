@@ -143,15 +143,22 @@ usual assignment-subdirectory default nests the environment where VS Code will
 not discover it automatically.
 
 The script creates private `assignment1-EMAILPREFIX` repositories with a fresh
-initial commit. Its student-team/invitation handling is unchanged. The public
+initial commit, plus a private `assignment1-yingbull` copy (using your logged-in
+GitHub username) for your testing and live demos. Both receive the same starter
+commit. Only the logged-in instructor
+can access the instructor copy; students can follow along by screen sharing.
+Its student-team/invitation handling is unchanged. The public
 visibility of this template does not make student repositories public.
 Repeat with `--assignment assignment2` and the same provisioning state directory.
 
 For a customized assignment, create an instructor starter from this template,
 edit `ASSIGNMENT.md`, add your examples/tests/dependencies, commit and push, then
 pass that starter as `--source OWNER/REPO`. The starter can itself be private.
-For demos, use **Use this template** or `gh repo create` to make a demo repository,
-clone it onto the host, and open it using the same steps.
+For demos, clone the instructor repository URL printed in the provisioning
+summary onto the host and open it using the same steps. Reruns preserve your
+demo edits; those edits are not propagated to student repositories. For a
+standalone demo without roster provisioning, use **Use this template** or
+`gh repo create` to make a separate demo repository.
 
 `classgh-setup` disables GitHub Actions on student repositories. That does not
 affect local Dev Containers, pytest, Ruff, or the tutor. The included GitHub
