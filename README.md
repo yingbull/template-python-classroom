@@ -145,10 +145,10 @@ not discover it automatically.
 The script creates private `assignment1-EMAILPREFIX` repositories with a fresh
 initial commit, plus a private `assignment1-yingbull` copy (using your logged-in
 GitHub username) for your testing and live demos. Both receive the same starter
-commit. Only the logged-in instructor
-can access the instructor copy; students can follow along by screen sharing.
-Its student-team/invitation handling is unchanged. The public
-visibility of this template does not make student repositories public.
+commit. Only the logged-in instructor can access the instructor copy; students
+can follow along by screen sharing. Its student-team/invitation handling is
+unchanged. The public visibility of this template does not make student
+repositories public.
 Repeat with `--assignment assignment2` and the same provisioning state directory.
 
 For a customized assignment, create an instructor starter from this template,
@@ -192,8 +192,6 @@ Do not open the same checkout through two different path aliases simultaneously.
 
 ## Template development
 
-See [VALIDATION.md](docs/VALIDATION.md) for tested platforms and limits.
-
 ```sh
 python -m pip install -r requirements-dev.txt
 python -m unittest discover -s .devcontainer/tests -v
@@ -202,9 +200,13 @@ ruff check .
 ruff format --check .
 ```
 
-The container-side smoke check is `python .devcontainer/smoke.py`. Public CI
+The container-side smoke check is `python .devcontainer/smoke.py`. The
+[Template checks workflow](https://github.com/yingbull/template-python-classroom/actions/workflows/checks.yml)
 tests Python helpers on Linux, macOS, and Windows, and the actual Docker
-devcontainer/persistence lifecycle on Linux. It does not download AI models.
+devcontainer/persistence lifecycle on Linux. Local Linux checks also passed
+with Podman through both Docker CLI compatibility and explicit Podman selection.
+Desktop integration on macOS/Windows, GPU overrides, and AI model quality have
+not been exercised by these checks. Validation does not download AI models.
 
 Derived from the Python/Continue/Ollama environment in
 [PROG1784F26/PROG1784-F26](https://github.com/PROG1784F26/PROG1784-F26).

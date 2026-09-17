@@ -215,12 +215,5 @@ the engine **after it has been selected**; it does not select the host CLI.
 
 Reference: [VS Code's Podman configuration](https://code.visualstudio.com/remote/advancedcontainers/docker-options#_podman).
 
-## Verification scope
-
-The Linux `podman-docker` + `podman-compose` route has passed real container
-startup and smoke checks for both repositories. On September 17, 2026, the direct
-Podman route also passed in isolated copies of both repositories using Podman
-5.8.2, podman-compose 1.5.0, and Dev Containers CLI 0.80.0, with any `docker`
-invocation deliberately blocked. No AI models were downloaded. The macOS and
-Windows host setup instructions follow the linked platform documentation; their
-Desktop UI flows have not been exercised on this Linux host.
+See [Template development](../README.md#template-development) for verification
+coverage and platform limits.
