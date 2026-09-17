@@ -1,0 +1,12 @@
+FROM mcr.microsoft.com/devcontainers/python:1-3.13-bookworm
+
+ENV VIRTUAL_ENV=/opt/venv
+ENV PATH="/opt/venv/bin:${PATH}"
+COPY requirements-dev.txt /usr/local/share/classroom/requirements-dev.txt
+RUN python -m venv /opt/venv \
+    && /opt/venv/bin/python -m pip install --no-cache-dir -r /usr/local/share/classroom/requirements-dev.txt \
+    && chown -R vscode:vscode /opt/venv \
+    && echo '. /opt/venv/bin/activate' >> /home/vscode/.bashrc
+
+LABEL org.opencontainers.image.source="https://github.com/yingbull/template-python-classroom" \
+    org.opencontainers.image.description="Python 3.13 classroom tools for demos and student assignments"

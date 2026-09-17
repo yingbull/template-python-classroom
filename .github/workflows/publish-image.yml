@@ -1,0 +1,121 @@
+name: Publish classroom image
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'New image version, for example 1.0.0 (do not reuse versions)'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: classroom-image-publication
+  cancel-in-progress: false
+
+env:
+  IMAGE: ghcr.io/yingbull/classroom-python
+
+jobs:
+  validate:
+    if: github.repository == 'yingbull/template-python-classroom' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - id: version
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit 1
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: validate
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: .devcontainer/Dockerfile.image
+          platforms: linux/${{ matrix.arch }}
+          load: true
+          tags: classroom-image:test
+          labels: |
+            org.opencontainers.image.version=${{ needs.validate.outputs.version }}
+            org.opencontainers.image.revision=${{ github.sha }}
+          cache-from: type=gha,scope=classroom-${{ matrix.arch }}
+          cache-to: type=gha,mode=max,scope=classroom-${{ matrix.arch }}
+      - name: Test the built image as the development user
+        run: |
+          docker run --rm --user vscode classroom-image:test python -m pip check
+          docker run --rm --user vscode --volume "$PWD/.devcontainer/check_image.py:/tmp/check_image.py:ro" classroom-image:test python /tmp/check_image.py
+          docker run --rm --user vscode --volume "$PWD:/workspace:ro" --workdir /workspace classroom-image:test python -m unittest discover -s .devcontainer/tests -q
+          docker run --rm --user vscode --volume "$PWD:/workspace:ro" --workdir /workspace classroom-image:test python -m pytest -p no:cacheprovider tests
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push the tested architecture image
+        env:
+          ARCH: ${{ matrix.arch }}
+        run: |
+          tag="$IMAGE:build-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT-$ARCH"
+          docker tag classroom-image:test "$tag"
+          docker push "$tag"
+          mkdir -p digests
+          docker image inspect "$tag" --format '{{index .RepoDigests 0}}' > "digests/$ARCH.txt"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: digest-${{ matrix.arch }}
+          path: digests/*.txt
+          retention-days: 7
+
+  publish:
+    needs: [validate, build]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: digest-*
+          path: digests
+          merge-multiple: true
+      - name: Publish a version containing both tested architectures
+        env:
+          VERSION: ${{ needs.validate.outputs.version }}
+        run: |
+          if docker buildx imagetools inspect "$IMAGE:$VERSION" >/dev/null 2>&1; then
+            echo 'This version already exists. Publish a new version instead.' >&2
+            exit 1
+          fi
+          docker buildx imagetools create --tag "$IMAGE:$VERSION" "$(cat digests/amd64.txt)" "$(cat digests/arm64.txt)"
+          docker buildx imagetools inspect "$IMAGE:$VERSION"
+          echo "Published \`$IMAGE:$VERSION\` for linux/amd64 and linux/arm64." >> "$GITHUB_STEP_SUMMARY"
+          echo 'For a newly created package, set its visibility to Public in GitHub Package settings before distributing it to students.' >> "$GITHUB_STEP_SUMMARY"
